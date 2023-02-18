@@ -5,6 +5,14 @@ export var speed = 420
 var velocity = Vector2.ZERO
 const GRAVITY = 250.0
 
+export var max_light_radius = 500
+export var min_light_radius = 100
+var current_light_radius = max_light_radius
+const max_time = 15
+var time
+var score
+
+signal game_over
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -12,6 +20,7 @@ const GRAVITY = 250.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	player_start()
 	pass # Replace with function body.
 
 func _process(delta):
@@ -52,9 +61,37 @@ func _physics_process(delta):
 	move_and_slide(velocity, dir)
 	#move_and_collide(velocity)
 	pass
-	#move_and_slide_with_snap()
-	#position.x += velocity.x
-	#position = move_and_slide(velocity, Vector2(0,-1))
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+
+func player_start():
+	$Timer.start(1)
+	
+	time = max_time
+	score = 0
+	
+	$TimeLabel.text = String(time)
+	$ScoreLabel.text = String(score)
+	
+
+
+func _on_Timer_timeout():
+	self.time = time - 1
+	$TimeLabel.text = String(time)
+	
+	
+	if(time < 0):
+		emit_signal("game_over")
+	
+	pass # Replace with function body.
+
+
+func _on_GameManager_player_found_goal():
+	score += 1
+	time += 10
+	
+	$ScoreLabel.text = String(score)
+	pass # Replace with function body.
+
+
+func _on_GameManager_game_start():
+	player_start()
+	pass # Replace with function body.

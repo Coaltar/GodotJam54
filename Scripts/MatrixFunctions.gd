@@ -5,7 +5,7 @@ static func create_zero_matrix(dimension: Vector2):
 	var array = []
 	for x in range(dimension.x):
 		array.append([])
-		for y in range(dimension.y):
+		for _y in range(dimension.y):
 			#map_array[x].append(0)
 			array[x].append(0)
 	return array

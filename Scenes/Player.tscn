@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Sprites/HanamaruSprite.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=2]
+[ext_resource path="res://Sprites/light_radius.png" type="Texture" id=3]
 
 [sub_resource type="AtlasTexture" id=2]
 flags = 4
@@ -70,7 +71,6 @@ animations = [ {
 extents = Vector2( 10, 13.5 )
 
 [node name="Player" type="KinematicBody2D"]
-position = Vector2( 0, 84 )
 script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
@@ -79,9 +79,46 @@ animation = "stand"
 frame = 1
 playing = true
 
+[node name="LanternLight" type="Light2D" parent="AnimatedSprite"]
+texture = ExtResource( 3 )
+texture_scale = 20.0
+shadow_enabled = true
+
+[node name="LanternLight2" type="Light2D" parent="AnimatedSprite"]
+visible = false
+texture = ExtResource( 3 )
+texture_scale = 50.0
+shadow_gradient_length = 5.4
+
 [node name="Camera2D" type="Camera2D" parent="AnimatedSprite"]
 current = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 3.5 )
 shape = SubResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="TimeLabel" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -12.0
+margin_top = -41.0
+margin_right = 12.0
+margin_bottom = -26.0
+text = "100"
+align = 1
+
+[node name="ScoreLabel" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = 30.0
+margin_right = 20.0
+margin_bottom = 44.0
+text = "0"
+align = 1
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
